@@ -1,3 +1,15 @@
+/* styles/globals.css */
+/* src/styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.body{
+  direction: rtl!important;
+  
+}
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -83,6 +95,9 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+
+
+
 }
 
 body {
