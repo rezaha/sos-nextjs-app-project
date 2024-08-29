@@ -17,33 +17,17 @@
   ],
   "todoList": [
     {
-      "id": "1",
-      "task": "تکمیل آموزش Next.js",
+      "id": "1724948195095",
+      "title": "شسیشسی",
+      "content": "",
+      "author": "",
       "isCompleted": false
     },
     {
-      "id": "2",
-      "task": "نوشتن مقاله‌ای درباره SSR",
-      "isCompleted": false
-    },
-    {
-      "id": "1724941487146",
-      "task": "asdsad",
-      "isCompleted": false
-    },
-    {
-      "id": "1724941489462",
-      "task": "asd",
-      "isCompleted": false
-    },
-    {
-      "id": 1724943699946,
-      "task": "reza",
-      "isCompleted": false
-    },
-    {
-      "id": 1724943706944,
-      "task": "yara",
+      "id": "1724949710881",
+      "title": "شسی",
+      "content": "محتوای پیش‌فرض",
+      "author": "نویسنده پیش‌فرض",
       "isCompleted": false
     }
   ]

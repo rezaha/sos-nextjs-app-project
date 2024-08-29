@@ -1,132 +1,108 @@
 import { useState, useEffect } from 'react';
+import Modal from 'react-modal';
 
 interface Todo {
-  id: number;
-  task: string;
+  id: string;
+  title: string;
+  content: string;
+  author: string;
   isCompleted: boolean;
 }
 
+Modal.setAppElement('#__next'); // فراخوانی خارج از تابع TodoList
+
 export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [newTask, setNewTask] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [newTodo, setNewTodo] = useState<Todo>({ id: '', title: '', content: '', author: '', isCompleted: false });
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:3002/todoList')  // تغییر به پورت 3002
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error fetching todos');
-        }
-        return response.json();
-      })
+    fetch('http://localhost:3002/todoList')
+      .then(response => response.json())
       .then(data => setTodos(data))
-      .catch(error => console.error('Error fetching todos:', error))
-      .finally(() => setLoading(false));
+      .catch(error => console.error('Error fetching todos:', error));
   }, []);
 
-  const addTodo = () => {
-    if (newTask.trim() !== '') {
-      const newTodo = { id: Date.now(), task: newTask, isCompleted: false };
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
 
-      fetch('http://localhost:3002/todoList', {  // تغییر به پورت 3002
+  const addTodo = () => {
+    if (newTodo.title.trim() !== '' && newTodo.content.trim() !== '' && newTodo.author.trim() !== '') {
+      const todoToAdd = { ...newTodo, id: Date.now().toString() };
+
+      fetch('http://localhost:3002/todoList', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newTodo),
+        body: JSON.stringify(todoToAdd),
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Error adding todo');
-          }
-          return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-          console.log('Todo added:', data); // بررسی پاسخ سرور
           setTodos([...todos, data]);
+          setNewTodo({ id: '', title: '', content: '', author: '', isCompleted: false });
+          closeModal();
         })
         .catch(error => console.error('Error adding todo:', error));
-
-      setNewTask('');
     }
   };
 
-  const toggleTodo = (id: number) => {
-    const todoToUpdate = todos.find(todo => todo.id === id);
-    if (!todoToUpdate) return;
-
-    const updatedTodo = { ...todoToUpdate, isCompleted: !todoToUpdate.isCompleted };
-
-    setTodos(todos.map(todo => (todo.id === id ? updatedTodo : todo)));
-
-    fetch(`http://localhost:3002/todoList/${id}`, {  // تغییر به پورت 3002
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedTodo),
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error updating todo');
-        }
-        console.log('Todo updated:', updatedTodo);
-      })
-      .catch(error => console.error('Error updating todo:', error));
+  const updateInput = (field: keyof Todo, value: string | boolean) => {
+    setNewTodo(prev => ({ ...prev, [field]: value }));
   };
-
-  const deleteTodo = (id: number) => {
-    setTodos(todos.filter(todo => todo.id !== id));
-
-    fetch(`http://localhost:3002/todoList/${id}`, {  // تغییر به پورت 3002
-      method: 'DELETE',
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error deleting todo');
-        }
-        console.log('Todo deleted:', id);
-      })
-      .catch(error => console.error('Error deleting todo:', error));
-  };
-
-  if (loading) {
-    return <p>در حال بارگذاری...</p>;
-  }
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">لیست وظایف</h1>
+      <button onClick={openModal} className="bg-blue-500 text-white px-4 py-2 rounded mb-4">
+        اضافه کردن وظیفه جدید
+      </button>
       <ul>
         {todos.map(todo => (
           <li key={todo.id} className="flex items-center justify-between mb-2">
-            <span
-              onClick={() => toggleTodo(todo.id)}
-              className={`cursor-pointer ${todo.isCompleted ? 'line-through' : ''}`}
-            >
-              {todo.task}
-            </span>
-            <button
-              onClick={() => deleteTodo(todo.id)}
-              className="bg-red-500 text-white px-2 py-1 rounded"
-            >
-              حذف
-            </button>
+            <div>
+              <h3>{todo.title} - {todo.author}</h3>
+              <p>{todo.content}</p>
+              <p>{`وضعیت: ${todo.isCompleted ? 'تکمیل شده' : 'در حال انجام'}`}</p>
+            </div>
           </li>
         ))}
       </ul>
-      <div className="mt-4">
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="افزودن وظیفه جدید"
+        className="bg-white p-4 rounded shadow-lg max-w-md mx-auto mt-10"
+      >
+        <h2 className="text-2xl font-bold mb-4">افزودن وظیفه جدید</h2>
         <input
           type="text"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-          className="border p-2 rounded"
-          placeholder="اضافه کردن وظیفه جدید"
+          value={newTodo.title}
+          onChange={e => updateInput('title', e.target.value)}
+          placeholder="عنوان"
+          className="border p-2 rounded mb-2 w-full"
         />
-        <button onClick={addTodo} className="bg-blue-500 text-white px-4 py-2 rounded ml-2">
+        <textarea
+          value={newTodo.content}
+          onChange={e => updateInput('content', e.target.value)}
+          placeholder="محتوا"
+          className="border p-2 rounded mb-2 w-full"
+        />
+        <input
+          type="text"
+          value={newTodo.author}
+          onChange={e => updateInput('author', e.target.value)}
+          placeholder="نویسنده"
+          className="border p-2 rounded mb-2 w-full"
+        />
+        <button onClick={addTodo} className="bg-blue-500 text-white px-4 py-2 rounded mt-2">
           اضافه کردن
         </button>
-      </div>
+        <button onClick={closeModal} className="bg-gray-300 text-black px-4 py-2 rounded mt-2 ml-2">
+          بستن
+        </button>
+      </Modal>
     </div>
   );
 }
