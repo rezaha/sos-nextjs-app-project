@@ -4,6 +4,33 @@
 @tailwind components;
 @tailwind utilities;
 
+input[type="text"],
+textarea,
+input[type="file"] {
+  background-color: #ffffff; /* پس‌زمینه سفید برای ورودی‌ها */
+  color: #000000; /* رنگ متن مشکی */
+  border: none;
+  border-bottom: 2px solid #007bff; /* خط زیر آبی رنگ */
+  padding: 8px;
+  border-radius: 0;
+  outline: none;
+  width: 100%;
+  box-shadow: none;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+textarea:focus,
+input[type="file"]:focus {
+  border-bottom-color: #007bff; /* تغییر رنگ خط زیر هنگام فوکوس */
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+  color: #999999; /* رنگ placeholder مشکی روشن‌تر */
+}
+
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
