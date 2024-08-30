@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface Todo {
@@ -15,11 +16,16 @@ export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<Todo>({ id: '', title: '', content: '', author: '', isCompleted: false });
   const [image, setImage] = useState<File | null>(null); 
+  const [isVisible, setIsVisible] = useState(false); 
+  const router = useRouter();
+
   useEffect(() => {
     fetch('http://localhost:3002/articles')
       .then(response => response.json())
       .then(data => setTodos(data))
       .catch(error => console.error('Error fetching todos:', error));
+
+    setTimeout(() => setIsVisible(true), 100); 
   }, []);
 
   const addTodo = async () => {
@@ -63,7 +69,7 @@ export default function TodoList() {
         .then(data => {
           setTodos([...todos, data]);
           setNewTodo({ id: '', title: '', content: '', author: '', isCompleted: false });
-          setImage(null); // بازنشانی تصویر
+          setImage(null); 
           toast.success('وظیفه با موفقیت اضافه شد!');
         })
         .catch(error => {
@@ -79,9 +85,19 @@ export default function TodoList() {
 
   return (
     <div className="container mx-auto p-4">
-      <ToastContainer />
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
 
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg mx-auto mt-8 relative">
+      <div className={`bg-white p-8 rounded-lg shadow-lg max-w-lg mx-auto mt-8 relative ${isVisible ? 'animate-fade-slide' : 'opacity-0'}`}>
         <h2 className="text-2xl font-bold mb-4">افزودن وظیفه جدید</h2>
         <input
           type="text"
@@ -110,6 +126,14 @@ export default function TodoList() {
         />
         <button onClick={addTodo} className="bg-blue-500 text-white px-4 py-2 rounded mt-2">
           اضافه کردن
+        </button>
+
+        <button
+          onClick={() => router.push('/')}
+          className="absolute top-2 right-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full transition-transform transform hover:scale-110"
+          style={{ width: '40px', height: '40px', fontSize: '24px' }}
+        >
+          ←
         </button>
       </div>
     </div>

@@ -54,11 +54,33 @@ export default function Home({ initialArticles, initialTodos }: HomeProps) {
       .then(() => {
         setArticles(articles.filter(article => article.id !== id)); 
         setTodos(todos.filter(todo => todo.id !== id)); 
-        toast.success('حذف با موفقیت انجام شد!');
+        toast.success('حذف با موفقیت انجام شد!', {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          style: { 
+            borderBottom: '4px solid #ff4d4d', // رنگ قرمز برای نوار زیرین
+          },
+        });
       })
       .catch(error => {
         console.error('Error deleting article:', error);
-        toast.error('خطا در حذف مقاله');
+        toast.error('خطا در حذف مقاله', {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          style: { 
+            borderBottom: '4px solid #ff4d4d', // رنگ قرمز برای نوار زیرین
+          },
+        });
       });
   };
 
@@ -69,32 +91,32 @@ export default function Home({ initialArticles, initialTodos }: HomeProps) {
         <title>SOS</title>
       </Head>
       <main className="container mx-auto p-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {articles.map((article) => (
-            <div key={article.id} className="relative bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer">
+            <div key={article.id} className="relative bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer">
               <Link href={`/articles/${article.id}`} passHref>
                 <div>
                   <Image 
                     src={article.image || '/default-image.jpg'}
                     alt={article.title}
-                    width={500}
-                    height={300}
+                    width={400}
+                    height={250}
                     className="rounded-t-lg"
                   />
-                  <h2 className="text-xl font-semibold mb-4 mt-4">{article.title}</h2>
+                  <h2 className="text-lg font-semibold mb-3 mt-3">{article.title}</h2>
                   <p className="text-gray-700">{article.content}</p>
-                  <p className="text-gray-500 mt-4">نویسنده: {article.author}</p>
+                  <p className="text-gray-500 mt-3">نویسنده: {article.author}</p>
                 </div>
               </Link>
-              <div className="flex justify-between mt-4">
+              <div className="flex justify-between mt-3">
                 <button 
                   onClick={() => deleteArticle(article.id)} 
-                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300"
+                  className="text-red-600 bg-red-100 text-sm px-2 py-1 rounded hover:bg-red-200 transition-colors duration-300"
                 >
                   حذف
                 </button>
                 <Link href={`/articles/${article.id}`} passHref>
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300">
+                  <button className="text-blue-600 bg-blue-100 text-sm px-2 py-1 rounded hover:bg-blue-200 transition-colors duration-300">
                     اطلاعات بیشتر
                   </button>
                 </Link>
