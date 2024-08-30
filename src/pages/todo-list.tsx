@@ -7,12 +7,14 @@ interface Todo {
   title: string;
   content: string;
   author: string;
+  image?: string; // اضافه کردن فیلد تصویر
   isCompleted: boolean;
 }
 
 export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<Todo>({ id: '', title: '', content: '', author: '', isCompleted: false });
+  const [image, setImage] = useState<File | null>(null); // حالت برای نگهداری فایل تصویر
 
   useEffect(() => {
     fetch('http://localhost:3002/todoList')
@@ -21,9 +23,35 @@ export default function TodoList() {
       .catch(error => console.error('Error fetching todos:', error));
   }, []);
 
-  const addTodo = () => {
+  const addTodo = async () => {
     if (newTodo.title.trim() !== '' && newTodo.content.trim() !== '' && newTodo.author.trim() !== '') {
-      const todoToAdd = { ...newTodo, id: Date.now().toString() };
+      let imagePath = '/images/articles/default.jpg'; // مسیر پیش‌فرض تصویر
+
+      if (image) {
+        const formData = new FormData();
+        formData.append('file', image);
+
+        try {
+          const uploadResponse = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData,
+          });
+
+          const uploadResult = await uploadResponse.json();
+          if (uploadResponse.ok) {
+            imagePath = uploadResult.filePath; // مسیر نسبی بدون public
+          } else {
+            toast.error('خطا در آپلود تصویر');
+            return;
+          }
+        } catch (error) {
+          console.error('Error uploading image:', error);
+          toast.error('خطا در آپلود تصویر');
+          return;
+        }
+      }
+
+      const todoToAdd = { ...newTodo, id: Date.now().toString(), image: imagePath };
 
       fetch('http://localhost:3002/todoList', {
         method: 'POST',
@@ -36,7 +64,8 @@ export default function TodoList() {
         .then(data => {
           setTodos([...todos, data]);
           setNewTodo({ id: '', title: '', content: '', author: '', isCompleted: false });
-          toast.success('وظیفه با موفقیت اضافه شد!'); // نمایش پیام موفقیت‌آمیز
+          setImage(null); // بازنشانی تصویر
+          toast.success('وظیفه با موفقیت اضافه شد!');
         })
         .catch(error => {
           console.error('Error adding todo:', error);
@@ -52,18 +81,6 @@ export default function TodoList() {
   return (
     <div className="container mx-auto p-4">
       <ToastContainer />
-      {/* <h1 className="text-2xl font-bold mb-4">لیست وظایف</h1>
-      <ul>
-        {todos.map(todo => (
-          <li key={todo.id} className="flex items-center justify-between mb-2">
-            <div>
-              <h3>{todo.title} - {todo.author}</h3>
-              <p>{todo.content}</p>
-              <p>{`وضعیت: ${todo.isCompleted ? 'تکمیل شده' : 'در حال انجام'}`}</p>
-            </div>
-          </li>
-        ))}
-      </ul> */}
 
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg mx-auto mt-8 relative">
         <h2 className="text-2xl font-bold mb-4">افزودن وظیفه جدید</h2>
@@ -85,6 +102,11 @@ export default function TodoList() {
           value={newTodo.author}
           onChange={e => updateInput('author', e.target.value)}
           placeholder="نویسنده"
+          className="border p-2 rounded mb-2 w-full"
+        />
+        <input
+          type="file"
+          onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
           className="border p-2 rounded mb-2 w-full"
         />
         <button onClick={addTodo} className="bg-blue-500 text-white px-4 py-2 rounded mt-2">
