@@ -7,15 +7,14 @@ interface Todo {
   title: string;
   content: string;
   author: string;
-  image?: string; // اضافه کردن فیلد تصویر
+  image?: string; 
   isCompleted: boolean;
 }
 
 export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<Todo>({ id: '', title: '', content: '', author: '', isCompleted: false });
-  const [image, setImage] = useState<File | null>(null); // حالت برای نگهداری فایل تصویر
-
+  const [image, setImage] = useState<File | null>(null); 
   useEffect(() => {
     fetch('http://localhost:3002/articles')
       .then(response => response.json())
@@ -25,7 +24,7 @@ export default function TodoList() {
 
   const addTodo = async () => {
     if (newTodo.title.trim() !== '' && newTodo.content.trim() !== '' && newTodo.author.trim() !== '') {
-      let imagePath = '/images/articles/default.jpg'; // مسیر پیش‌فرض تصویر
+      let imagePath = '/images/articles/default.jpg'; 
 
       if (image) {
         const formData = new FormData();
@@ -39,7 +38,7 @@ export default function TodoList() {
 
           const uploadResult = await uploadResponse.json();
           if (uploadResponse.ok) {
-            imagePath = uploadResult.filePath; // مسیر نسبی بدون public
+            imagePath = uploadResult.filePath; 
           } else {
             toast.error('خطا در آپلود تصویر');
             return;

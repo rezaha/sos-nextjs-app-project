@@ -26,8 +26,8 @@ export default function upload(req: NextApiRequest, res: NextApiResponse) {
     }
 
     const file = Array.isArray(files.file) ? files.file[0] : files.file;
-    const fileName = file.originalFilename || file.newFilename; // برای دریافت نام فایل
-    const relativePath = `/images/articles/${fileName}`; // مسیر نسبی
+    const fileName = file.originalFilename || file.newFilename;
+    const relativePath = `/images/articles/${fileName}`; 
 
     res.status(200).json({ filePath: relativePath });
   });

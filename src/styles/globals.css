@@ -7,11 +7,10 @@
 input[type="text"],
 textarea,
 input[type="file"] {
-  background-color: #ffffff; /* پس‌زمینه سفید برای ورودی‌ها */
-  color: #000000; /* رنگ متن مشکی */
+  background-color: #ffffff; 
+  color: #000000; 
   border: none;
-  border-bottom: 2px solid #007bff; /* خط زیر آبی رنگ */
-  padding: 8px;
+  border-bottom: 2px solid #007bff;
   border-radius: 0;
   outline: none;
   width: 100%;
@@ -22,12 +21,12 @@ input[type="file"] {
 input[type="text"]:focus,
 textarea:focus,
 input[type="file"]:focus {
-  border-bottom-color: #007bff; /* تغییر رنگ خط زیر هنگام فوکوس */
+  border-bottom-color: #007bff; 
 }
 
 input[type="text"]::placeholder,
 textarea::placeholder {
-  color: #999999; /* رنگ placeholder مشکی روشن‌تر */
+  color: #999999; 
 }
 
 

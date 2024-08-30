@@ -16,7 +16,7 @@ export default function AddArticle() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    let imagePath = '/images/articles/default.jpg'; // مسیر تصویر پیش‌فرض
+    let imagePath = '/images/articles/default.jpg'; 
 
     if (image) {
       const formData = new FormData();
@@ -24,7 +24,7 @@ export default function AddArticle() {
 
       const response = await axios.post('/api/upload', formData);
       if (response.data.filePath) {
-        imagePath = response.data.filePath; // استفاده از مسیر تصویر آپلود شده
+        imagePath = response.data.filePath; 
       }
     }
 
@@ -33,7 +33,7 @@ export default function AddArticle() {
       title,
       content,
       author,
-      image: imagePath, // ذخیره مسیر تصویر
+      image: imagePath,
     };
 
     const response = await fetch('/api/articles', {
