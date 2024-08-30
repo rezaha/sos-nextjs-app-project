@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import Modal from 'react-modal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Todo {
   id: string;
@@ -9,12 +10,9 @@ interface Todo {
   isCompleted: boolean;
 }
 
-Modal.setAppElement('#__next'); // فراخوانی خارج از تابع TodoList
-
 export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<Todo>({ id: '', title: '', content: '', author: '', isCompleted: false });
-  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost:3002/todoList')
@@ -22,9 +20,6 @@ export default function TodoList() {
       .then(data => setTodos(data))
       .catch(error => console.error('Error fetching todos:', error));
   }, []);
-
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
 
   const addTodo = () => {
     if (newTodo.title.trim() !== '' && newTodo.content.trim() !== '' && newTodo.author.trim() !== '') {
@@ -41,9 +36,12 @@ export default function TodoList() {
         .then(data => {
           setTodos([...todos, data]);
           setNewTodo({ id: '', title: '', content: '', author: '', isCompleted: false });
-          closeModal();
+          toast.success('وظیفه با موفقیت اضافه شد!'); // نمایش پیام موفقیت‌آمیز
         })
-        .catch(error => console.error('Error adding todo:', error));
+        .catch(error => {
+          console.error('Error adding todo:', error);
+          toast.error('خطا در اضافه کردن وظیفه');
+        });
     }
   };
 
@@ -53,10 +51,8 @@ export default function TodoList() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">لیست وظایف</h1>
-      <button onClick={openModal} className="bg-blue-500 text-white px-4 py-2 rounded mb-4">
-        اضافه کردن وظیفه جدید
-      </button>
+      <ToastContainer />
+      {/* <h1 className="text-2xl font-bold mb-4">لیست وظایف</h1>
       <ul>
         {todos.map(todo => (
           <li key={todo.id} className="flex items-center justify-between mb-2">
@@ -67,14 +63,9 @@ export default function TodoList() {
             </div>
           </li>
         ))}
-      </ul>
+      </ul> */}
 
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="افزودن وظیفه جدید"
-        className="bg-white p-4 rounded shadow-lg max-w-md mx-auto mt-10"
-      >
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg mx-auto mt-8 relative">
         <h2 className="text-2xl font-bold mb-4">افزودن وظیفه جدید</h2>
         <input
           type="text"
@@ -99,10 +90,7 @@ export default function TodoList() {
         <button onClick={addTodo} className="bg-blue-500 text-white px-4 py-2 rounded mt-2">
           اضافه کردن
         </button>
-        <button onClick={closeModal} className="bg-gray-300 text-black px-4 py-2 rounded mt-2 ml-2">
-          بستن
-        </button>
-      </Modal>
+      </div>
     </div>
   );
 }
