@@ -6,14 +6,6 @@
       "content": "در اینجا محتوایی درباره نحوه استفاده از React به همراه Next.js برای ساخت برنامه‌های رندر شده در سمت سرور آورده شده است.",
       "author": "محمد",
       "image": "/images/articles/123.jpg"
-    },
-    {
-      "id": "1725019954094",
-      "title": "شسی",
-      "content": "شسی",
-      "author": "شسی",
-      "isCompleted": false,
-      "image": "/images/articles/123.PNG"
     }
   ],
   "todoList": []
