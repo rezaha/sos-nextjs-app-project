@@ -17,7 +17,7 @@ export default function TodoList() {
   const [image, setImage] = useState<File | null>(null); // حالت برای نگهداری فایل تصویر
 
   useEffect(() => {
-    fetch('http://localhost:3002/todoList')
+    fetch('http://localhost:3002/articles')
       .then(response => response.json())
       .then(data => setTodos(data))
       .catch(error => console.error('Error fetching todos:', error));
@@ -53,7 +53,7 @@ export default function TodoList() {
 
       const todoToAdd = { ...newTodo, id: Date.now().toString(), image: imagePath };
 
-      fetch('http://localhost:3002/todoList', {
+      fetch('http://localhost:3002/articles', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

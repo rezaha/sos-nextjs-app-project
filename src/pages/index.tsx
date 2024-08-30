@@ -48,7 +48,7 @@ export default function Home() {
   }, [initialArticles]);
 
   const deleteTodo = (id: string) => {
-    fetch(`http://localhost:3002/todoList/${id}`, {
+    fetch(`http://localhost:3002/articles/${id}`, {
       method: 'DELETE',
     })
       .then(() => {

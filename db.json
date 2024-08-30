@@ -8,29 +8,13 @@
       "image": "/images/articles/123.jpg"
     },
     {
-      "id": "2",
-      "title": "درک رندر سمت سرور",
-      "content": "این مقاله توضیح می‌دهد که رندر سمت سرور چیست و چرا برای بهینه‌سازی موتورهای جستجو و زمان بارگذاری صفحه مفید است.",
-      "author": "رضا",
-      "image": "/images/articles/123.jpg"
-    }
-  ],
-  "todoList": [
-    {
-      "id": "1725006055125",
-      "title": "سشی",
+      "id": "1725019954094",
+      "title": "شسی",
       "content": "شسی",
       "author": "شسی",
       "isCompleted": false,
-      "image": "/images/articles/575d3f06f21f87bfbadfc2118.jpg"
-    },
-    {
-      "id": "1725006921200",
-      "title": "شسیشسیس",
-      "content": "شسشسیی",
-      "author": "شسیشسشسییشسی",
-      "isCompleted": false,
-      "image": "/images/articles/default.jpg"
+      "image": "/images/articles/123.PNG"
     }
-  ]
+  ],
+  "todoList": []
 }
