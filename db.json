@@ -5,27 +5,20 @@
       "title": "چگونه از React با Next.js استفاده کنیم",
       "content": "در اینجا محتوایی درباره نحوه استفاده از React به همراه Next.js برای ساخت برنامه‌های رندر شده در سمت سرور آورده شده است.",
       "author": "محمد",
-      "image": "/components/images/articles/123.jpg"
+      "image": "/images/articles/123.jpg"
     },
     {
       "id": "2",
       "title": "درک رندر سمت سرور",
       "content": "این مقاله توضیح می‌دهد که رندر سمت سرور چیست و چرا برای بهینه‌سازی موتورهای جستجو و زمان بارگذاری صفحه مفید است.",
       "author": "رضا",
-      "image": "/components/images/articles/123.jpg"
+      "image": "/images/articles/123.jpg"
     }
   ],
   "todoList": [
     {
-      "id": "1724948195095",
-      "title": "شسیشسی",
-      "content": "",
-      "author": "",
-      "isCompleted": false
-    },
-    {
-      "id": "1724949710881",
-      "title": "شسی",
+      "id": "1724956071507",
+      "title": "asdasd",
       "content": "محتوای پیش‌فرض",
       "author": "نویسنده پیش‌فرض",
       "isCompleted": false

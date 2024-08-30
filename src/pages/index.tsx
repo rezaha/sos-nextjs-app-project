@@ -8,6 +8,7 @@ import rtlPlugin from 'stylis-plugin-rtl';
 import Image from 'next/image';
 import Link from 'next/link';
 import Modal from 'react-modal';
+import MainLayout from "../components/MainLayout";
 
 // تعریف نوع وظایف
 interface Todo {
@@ -87,12 +88,11 @@ export default function Home() {
   };
 
   return (
-    <CacheProvider value={cacheRtl}>
+   
       <div className={`min-h-screen bg-gray-100 ${inter.className}`}>
         <Head>
-          <title>Your Page Title</title>
+          <title>نمایش همه</title>
         </Head>
-        <Header />
         <main className="container mx-auto p-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {articles.map((article) => (
@@ -136,7 +136,6 @@ export default function Home() {
               اضافه کردن وظیفه جدید
             </button>
           </div>
-
           <Modal
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
@@ -160,6 +159,6 @@ export default function Home() {
           </Modal>
         </main>
       </div>
-    </CacheProvider>
+  
   );
 }

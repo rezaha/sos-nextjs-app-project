@@ -10,7 +10,9 @@ const ArticlePage = () => {
   console.log('articleId:', articleid); // بررسی مقدار articleId
 
   // پیدا کردن مقاله با توجه به ID
-  const article = data.articles.find((article) => article.id === parseInt(articleid as string));
+  const articleId = parseInt(router.query.articleid as string); // تبدیل به عدد
+  const article = data.articles.find((article) => article.id === articleid);
+  
 
   if (!article) {
     return <p>مقاله پیدا نشد</p>;
